@@ -1,80 +1,118 @@
-//The animation and transition of tiles additional feature was implemented
-//ID #: 620004371
-//WED DEVELOPMENT (INFO 2180)
 
-
-var emptyTile = 15; 												//Empty tile
-var move = "none";											 // direction
-var newbox;														//Array of tiles
+var emptyTile = 15; 												
+var move = "none";											 
+var newbox;														
 var counter = 0;
 var addvar = 0;
 var str;
-var inProgress = false;								//Is tile still moving..
+var inProgress = false;								
 
-//Loads tiles when webpage loads
 window.onload = function()
+<!-- Function used to set the layout of the tiles in the correct order. -->
 {
-	var tile = document.getElementById('puzzlearea').getElementsByTagName('div');
-	newbox = tile;
+	var tiles = document.getElementById('puzzlearea').getElementsByTagName('div');
+	newbox = tiles;
 	var btn = document.getElementById('shufflebutton');
 	btn.onclick = shuffle;
-	for(var i = 0; i < tile.length; i++)
+	for(var i = 0; i < tiles.length; i++)
 	{
-		tile[i].className = 'puzzlepiece';
-		tile[i].onmouseover = canMove;
-		tile[i].onmouseout = clear;
-		tile[i].onclick = moveTile;
+		tiles[i].className = 'puzzlepiece';
+		tiles[i].onmouseover = isMovableTile;
+		tiles[i].onmouseout = resetTile;
+		tiles[i].onclick = moveTile;
 
 		if(i >= 0 && i <= 3)
 		{
-			tile[i].style.left += i * 100 + 'px';
-			tile[i].style.top = 0 + 'px';
-			tile[i].style.backgroundPosition = -i * 100 + 'px ' + '0px';
+			tiles[i].style.marginLeft += i * 100 + 'px';
+			tiles[i].style.marginTop = 0 + 'px';
+			tiles[i].style.backgroundPosition = -i * 100 + 'px ' + '0px';
 		}
 		else if(i >= 4 && i <= 7)
 		{
-			tile[i].style.left += (i - 4) * 100 + 'px';
-			tile[i].style.top = 100 + 'px';
-			tile[i].style.backgroundPosition = -(i - 4) * 100 + 'px '+ '-100px';
+			tiles[i].style.marginLeft += (i - 4) * 100 + 'px';
+			tiles[i].style.marginTop = 100 + 'px';
+			tiles[i].style.backgroundPosition = -(i - 4) * 100 + 'px '+ '-100px';
 		}
 		else if(i >= 8 && i <= 11)
 		{
-			tile[i].style.left += (i - 8) * 100 + 'px';
-			tile[i].style.top = 200 + 'px';
-			tile[i].style.backgroundPosition = -(i - 8) * 100 + 'px '+ '-200px';
+			tiles[i].style.marginLeft += (i - 8) * 100 + 'px';
+			tiles[i].style.marginTop = 200 + 'px';
+			tiles[i].style.backgroundPosition = -(i - 8) * 100 + 'px '+ '-200px';
 		}
 		else
 		{
-			tile[i].style.left += (i - 12) * 100 + 'px';
-			tile[i].style.top = 300 + 'px';
-			tile[i].style.backgroundPosition = -(i - 12) * 100 + 'px ' + '-300px';
+			tiles[i].style.marginLeft += (i - 12) * 100 + 'px';
+			tiles[i].style.marginTop = 300 + 'px';
+			tiles[i].style.backgroundPosition = -(i - 12) * 100 + 'px ' + '-300px';
 		}
 		
 	}
 	        
 }
 
-//Check if tile can move
-function canMove()
+function getLeftET()
+<!-- Returns the marginLeft value of empty tile -->
+{
+		if(emptyTile >= 0 && emptyTile <= 3)
+		{
+			return emptyTile * 100 + 'px';
+		}
+		else if(emptyTile >= 4 && emptyTile <= 7)
+		{
+			return (emptyTile - 4) * 100 + 'px';
+		}
+		else if(emptyTile >= 8 && emptyTile <= 11)
+		{
+			return (emptyTile - 8) * 100 + 'px';
+		}
+		else
+		{
+			return (emptyTile - 12) * 100 + 'px';
+		}
+}
+
+function getTopET()
+<!-- Returns the marginTop value of empty tile -->
+{
+	if(emptyTile >= 0 && emptyTile <= 3)
+	{
+			return '0px';
+	}
+	else if(emptyTile >= 4 && emptyTile <= 7)
+	{
+			return '100px';
+	}
+	else if(emptyTile >= 8 && emptyTile <= 11)
+	{
+			return '200px';
+	}else
+	{
+			return '300px';
+	}
+}
+
+
+function isMovableTile()
+<!-- On hover, checks if tile has any possible moves. -->
 {
 	if(!inProgress)
 	{
-		if((parseInt(this.style.left) + parseInt(this.offsetWidth)) === parseInt(getLeftET()) && this.style.top === getTopET())
+		if((parseInt(this.style.marginLeft) + parseInt(this.offsetWidth)) === parseInt(getLeftET()) && this.style.marginTop === getTopET())
 		{
 		this.className = this.className + " movablepiece";
 		move = "right";
 		}
-		else if(parseInt(this.style.left) === (parseInt(getLeftET()) + parseInt(this.offsetWidth)) && this.style.top === getTopET())
+		else if(parseInt(this.style.marginLeft) === (parseInt(getLeftET()) + parseInt(this.offsetWidth)) && this.style.marginTop === getTopET())
 		{
 			this.className = this.className + " movablepiece";
 			move = "left";
 		}
-		else if((parseInt(this.style.top) + parseInt(this.offsetHeight)) === parseInt(getTopET()) && this.style.left === getLeftET())
+		else if((parseInt(this.style.marginTop) + parseInt(this.offsetHeight)) === parseInt(getTopET()) && this.style.marginLeft === getLeftET())
 		{
 			this.className = this.className + " movablepiece";
 			move = "down";
 		}
-		else if(parseInt(this.style.top) === (parseInt(getTopET()) + parseInt(this.offsetHeight)) && this.style.left === getLeftET())
+		else if(parseInt(this.style.marginTop) === (parseInt(getTopET()) + parseInt(this.offsetHeight)) && this.style.marginLeft === getLeftET())
 		{
 			this.className = this.className + " movablepiece";
 			move = "up";
@@ -88,31 +126,26 @@ function canMove()
 
 }
 
-//remove .moveablepiece class when mouse exits tile
-function clear()
-{
-	this.className = 'puzzlepiece';
-}
 
-//Check method for shuffle
-function can_Move(el)
+function isMovable(tile)
+<!-- Used to check a list of tiles for the correct movement when a shuffle is done. -->
 {
-	if((parseInt(el.style.left) + parseInt(el.offsetWidth)) === parseInt(getLeftET()) && el.style.top === getTopET())
+	if((parseInt(tile.style.marginLeft) + parseInt(tile.offsetWidth)) === parseInt(getLeftET()) && tile.style.marginTop === getTopET())
 	{
 		move = "right";
 		return "right";
 	}
-	else if(parseInt(el.style.left) === (parseInt(getLeftET()) + parseInt(el.offsetWidth)) && el.style.top === getTopET())
+	else if(parseInt(tile.style.marginLeft) === (parseInt(getLeftET()) + parseInt(tile.offsetWidth)) && tile.style.marginTop === getTopET())
 	{
 		move = "left";
 		return "left";
 	}
-	else if((parseInt(el.style.top) + parseInt(el.offsetHeight)) === parseInt(getTopET()) && el.style.left === getLeftET())
+	else if((parseInt(tile.style.marginTop) + parseInt(tile.offsetHeight)) === parseInt(getTopET()) && tile.style.marginLeft === getLeftET())
 	{
 		move = "down";
 		return "down";
 	}
-	else if(parseInt(el.style.top) === (parseInt(getTopET()) + parseInt(el.offsetHeight)) && el.style.left === getLeftET())
+	else if(parseInt(tile.style.marginTop) === (parseInt(getTopET()) + parseInt(tile.offsetHeight)) && tile.style.marginLeft === getLeftET())
 	{
 		move = "up";
 		return "up";
@@ -125,8 +158,9 @@ function can_Move(el)
 
 }
 
-//Animates tile movement
+
 function transition()
+<!-- Does tile transition; Assists moveTile. -->
 {
 	var indx = 0;
 	for(var i = 0; i < newbox.length; i++)
@@ -141,15 +175,15 @@ function transition()
 	{
 		if(move === "left" || move === "right")
 		{
-			newbox[indx].style.left = parseInt(newbox[indx].style.left) + counter + 'px';
+			newbox[indx].style.marginLeft = parseInt(newbox[indx].style.marginLeft) + counter + 'px';
 		}
 		else
 		{
-			newbox[indx].style.top = parseInt(newbox[indx].style.top) + counter + 'px';
+			newbox[indx].style.marginTop = parseInt(newbox[indx].style.marginTop) + counter + 'px';
 		}
 		addvar += 1;
 		inProgress = true;
-		setTimeout(transition, 0.2);
+		setTimeout(transition, 0.5);
 	}
 	else
 	{
@@ -160,8 +194,9 @@ function transition()
 	
 }
 
-//Gets direction and then calls transition() to move tile
+
 function moveTile()
+<!-- Moves tile is the empty tile space. -->
 {
 	if(!inProgress)
 	{
@@ -199,37 +234,39 @@ function moveTile()
 	}
 }
 
-//Move method for shuffle
-function move_Tile(el)
+
+function shuffleTile(tile)
+<!-- Shuffles tile around based on available movement -->
 {
 	
 	switch(move)
 	{
 		case "right":
-			el.style.left = parseInt(el.style.left) + 100 + 'px';
+			tile.style.marginLeft = parseInt(tile.style.marginLeft) + 100 + 'px';
 			emptyTile -= 1;
 		break;
 
 		case "left":
-			el.style.left = parseInt(el.style.left) - 100 + 'px';
+			tile.style.marginLeft = parseInt(tile.style.marginLeft) - 100 + 'px';
 			emptyTile += 1;
 		break;
 
 		case "down":
-			el.style.top = parseInt(el.style.top) + 100 + 'px';
+			tile.style.marginTop = parseInt(tile.style.marginTop) + 100 + 'px';
 			emptyTile -= 4;
 		break;
 
 		case "up":
-			el.style.top = parseInt(el.style.top) - 100 + 'px';
+			tile.style.marginTop = parseInt(tile.style.marginTop) - 100 + 'px';
 			emptyTile += 4;
 		break;
 
 	}
 }
 
-//shuffles tiles
+
 function shuffle()
+<!-- Shuffles tiles around -->
 {
 	var num = 100;
 	for(var i = 0; i < num; i++)
@@ -237,7 +274,7 @@ function shuffle()
 		var possibleMoves = [];
 		for(var p = 0; p < newbox.length; p++)
 		{
-			if(can_Move(newbox[p]) != "none")
+			if(isMovable(newbox[p]) != "none")
 			{
 				possibleMoves.push(p);
 			}
@@ -247,50 +284,17 @@ function shuffle()
 		if(possibleMoves.length != 0)
 		{
 			var n = possibleMoves[Math.floor((Math.random() * possibleMoves.length) + 0)];
-			can_Move(newbox[n]);
-			move_Tile(newbox[n]);
+			isMovable(newbox[n]);
+			shuffleTile(newbox[n]);
 		}
 	}
 	move = "none";
 }
 
-//Returns the corresponding X for the empty tile
-function getLeftET()
+function resetTile()
+<!-- On mouse out, resets the class name of tile. -->
 {
-		if(emptyTile >= 0 && emptyTile <= 3)
-		{
-			return emptyTile * 100 + 'px';
-		}
-		else if(emptyTile >= 4 && emptyTile <= 7)
-		{
-			return (emptyTile - 4) * 100 + 'px';
-		}
-		else if(emptyTile >= 8 && emptyTile <= 11)
-		{
-			return (emptyTile - 8) * 100 + 'px';
-		}
-		else
-		{
-			return (emptyTile - 12) * 100 + 'px';
-		}
+	this.className = 'puzzlepiece';
 }
 
-//Returns the corresponding Y for the empty tile
-function getTopET()
-{
-	if(emptyTile >= 0 && emptyTile <= 3)
-	{
-			return '0px';
-	}
-	else if(emptyTile >= 4 && emptyTile <= 7)
-	{
-			return '100px';
-	}
-	else if(emptyTile >= 8 && emptyTile <= 11)
-	{
-			return '200px';
-	}else
-	{
-			return '300px';
-	}
-}
+
