@@ -1,7 +1,7 @@
 
 var emptyTile = 15; 												
 var move = "none";											 
-var newbox;														
+var newTile;														
 var counter = 0;
 var addvar = 0;
 var str;
@@ -11,7 +11,7 @@ window.onload = function()
 <!-- Function used to set the layout of the tiles in the correct order. -->
 {
 	var tiles = document.getElementById('puzzlearea').getElementsByTagName('div');
-	newbox = tiles;
+	newTile = tiles;
 	var btn = document.getElementById('shufflebutton');
 	btn.onclick = shuffle;
 	for(var i = 0; i < tiles.length; i++)
@@ -163,9 +163,9 @@ function transition()
 <!-- Does tile transition; Assists moveTile. -->
 {
 	var indx = 0;
-	for(var i = 0; i < newbox.length; i++)
+	for(var i = 0; i < newTile.length; i++)
 	{
-		if(newbox[i].textContent === str)
+		if(newTile[i].textContent === str)
 		{
 			indx = i;	
 		}
@@ -175,11 +175,11 @@ function transition()
 	{
 		if(move === "left" || move === "right")
 		{
-			newbox[indx].style.marginLeft = parseInt(newbox[indx].style.marginLeft) + counter + 'px';
+			newTile[indx].style.marginLeft = parseInt(newTile[indx].style.marginLeft) + counter + 'px';
 		}
 		else
 		{
-			newbox[indx].style.marginTop = parseInt(newbox[indx].style.marginTop) + counter + 'px';
+			newTile[indx].style.marginTop = parseInt(newTile[indx].style.marginTop) + counter + 'px';
 		}
 		addvar += 1;
 		inProgress = true;
@@ -272,9 +272,9 @@ function shuffle()
 	for(var i = 0; i < num; i++)
 	{
 		var possibleMoves = [];
-		for(var p = 0; p < newbox.length; p++)
+		for(var p = 0; p < newTile.length; p++)
 		{
-			if(isMovable(newbox[p]) != "none")
+			if(isMovable(newTile[p]) != "none")
 			{
 				possibleMoves.push(p);
 			}
@@ -284,8 +284,8 @@ function shuffle()
 		if(possibleMoves.length != 0)
 		{
 			var n = possibleMoves[Math.floor((Math.random() * possibleMoves.length) + 0)];
-			isMovable(newbox[n]);
-			shuffleTile(newbox[n]);
+			isMovable(newTile[n]);
+			shuffleTile(newTile[n]);
 		}
 	}
 	move = "none";
