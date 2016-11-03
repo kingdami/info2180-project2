@@ -8,7 +8,7 @@ var str;
 var inProgress = false;								
 
 window.onload = function()
-<!-- Function used to set the layout of the tiles in the correct order. -->
+// Function used to set the layout of the tiles in the correct order.
 {
 	var tiles = document.getElementById('puzzlearea').getElementsByTagName('div');
 	newTile = tiles;
@@ -51,7 +51,7 @@ window.onload = function()
 }
 
 function getLeftET()
-<!-- Returns the marginLeft value of empty tile -->
+//Returns the marginLeft value of empty tile 
 {
 		if(emptyTile >= 0 && emptyTile <= 3)
 		{
@@ -72,7 +72,7 @@ function getLeftET()
 }
 
 function getTopET()
-<!-- Returns the marginTop value of empty tile -->
+// Returns the marginTop value of empty tile
 {
 	if(emptyTile >= 0 && emptyTile <= 3)
 	{
@@ -93,7 +93,7 @@ function getTopET()
 
 
 function isMovableTile()
-<!-- On hover, checks if tile has any possible moves. -->
+// On hover, checks if tile has any possible moves. 
 {
 	if(!inProgress)
 	{
@@ -128,7 +128,7 @@ function isMovableTile()
 
 
 function isMovable(tile)
-<!-- Used to check a list of tiles for the correct movement when a shuffle is done. -->
+// Used to check a list of tiles for the correct movement when a shuffle is done. 
 {
 	if((parseInt(tile.style.marginLeft) + parseInt(tile.offsetWidth)) === parseInt(getLeftET()) && tile.style.marginTop === getTopET())
 	{
@@ -160,7 +160,7 @@ function isMovable(tile)
 
 
 function transition()
-<!-- Does tile transition; Assists moveTile. -->
+// Does tile transition; Assists moveTile. 
 {
 	var indx = 0;
 	for(var i = 0; i < newTile.length; i++)
@@ -170,7 +170,6 @@ function transition()
 			indx = i;	
 		}
 	}
-	
 	if(addvar != 100)
 	{
 		if(move === "left" || move === "right")
@@ -196,7 +195,7 @@ function transition()
 
 
 function moveTile()
-<!-- Moves tile is the empty tile space. -->
+// Moves tile is the empty tile space. 
 {
 	if(!inProgress)
 	{
@@ -236,7 +235,7 @@ function moveTile()
 
 
 function shuffleTile(tile)
-<!-- Shuffles tile around based on available movement -->
+// Shuffles tile around based on available movement 
 {
 	
 	switch(move)
@@ -266,7 +265,7 @@ function shuffleTile(tile)
 
 
 function shuffle()
-<!-- Shuffles tiles around -->
+// Shuffles tiles around 
 {
 	var num = 100;
 	for(var i = 0; i < num; i++)
@@ -278,9 +277,7 @@ function shuffle()
 			{
 				possibleMoves.push(p);
 			}
-
 		}
-
 		if(possibleMoves.length != 0)
 		{
 			var n = possibleMoves[Math.floor((Math.random() * possibleMoves.length) + 0)];
@@ -292,9 +289,12 @@ function shuffle()
 }
 
 function resetTile()
-<!-- On mouse out, resets the class name of tile. -->
+// On mouse out, resets the class name of tile. 
 {
 	this.className = 'puzzlepiece';
 }
+
+
+
 
 
